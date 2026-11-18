@@ -18,7 +18,6 @@ def buscar_participante(db:Session, participante_id:int):
         raise HTTPException(status_code=404, detail="Participante não encontrado")
     return participante
 
-
 def editar_participante(db:Session, participante_id:int, dados):
     participante = buscar_participante(db, participante_id)
     return participantes_repository.atualizar(db, participante, dados)

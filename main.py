@@ -6,13 +6,9 @@ from database import Base, engine
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Gerenciamento de eventos acadêmicos - Santana & Mendes")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],       # em produção, restrinja a origens específicas
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@app.get("/")
+def raiz():
+    return {"Alerta de Sucesso":"Hello World!"}
 
 app.include_router(eventos_router.router)
 app.include_router(participantes_routers.router)

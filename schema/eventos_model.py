@@ -1,29 +1,16 @@
 # EVENTOS MODEL
+from datetime import date, time
+from pydantic import BaseModel, ConfigDict, Field
 
-from pydantic import BaseModel
-class Evento(BaseModel):
-    # id: int | None = None # acho q nn precisa por causa do banco de dados
-    titulo: str
+class EventoCreate(BaseModel):
+    titulo: str = Field(min_length=1)
     descricao: str
-    data: str
-    horario: str
+    data: date
+    horario: time
     local: str
-    capacidade: int
+    capacidade: int = Field(gt=0)
     categoria: str
 
-
-# ●  id 
-# ●  titulo 
-# ●  descricao 
-# ●  data 
-# ●  horario 
-# ●  local 
-# ●  capacidade 
-# ●  categoria
-
-# Exemplos de categorias: 
-# ●  Palestra 
-# ●  Workshop 
-# ●  Minicurso 
-# ●  Seminário 
-# ●  Competição
+class EventoResponse(EventoCreate):
+    id:int
+    model_config = ConfigDict(from_attributes=True)

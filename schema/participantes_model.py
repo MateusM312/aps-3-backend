@@ -1,12 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
-# ●  id 
-# ●  nome 
-# ●  email 
-# ●  curso 
-
-class Participante(BaseModel):
-    # id: int | None = None # nao vai precisar
-    nome: str
-    email: str
+class ParticipanteCreate(BaseModel):
+    nome: str = Field(min_length=1)
+    email: EmailStr
     curso: str
+
+class ParticipanteResponse(ParticipanteCreate):
+    id:int
+    model_config = ConfigDict(from_attributes=True)

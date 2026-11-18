@@ -9,7 +9,7 @@ class ParticipantesModel(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
     curso = Column(String, nullable=False)
 
 class EventoModel(Base):

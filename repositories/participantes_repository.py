@@ -9,37 +9,20 @@ def salvar(db: Session, participante: ParticipantesModel) -> ParticipantesModel:
     db.refresh(participante)
     return participante
 
-def listar_participantes(db: Session, participante: ParticipantesModel):
-    return db.query(participante).all()
+def listar_participantes(db: Session):
+    return db.query(ParticipantesModel).all()
 
-def buscar_por_id(db: Session, participante: ParticipantesModel, id: int) -> ParticipantesModel | None:
-    db.query(ParticipantesModel).filter(ParticipantesModel.id == id).first()
-    return None
+def buscar_por_id(db: Session, id: int) -> ParticipantesModel | None:
+    return db.query(ParticipantesModel).filter(ParticipantesModel.id == id).first()
 
-def excluir(db: Session, participante: ParticipantesModel, id: int) -> None:
+def excluir(db: Session, participante: ParticipantesModel) -> None:
     db.delete(participante)
     db.commit()
 
-def atualizar(db: Session, participante: ParticipantesModel, id: int, dados) -> ParticipantesModel:
+def atualizar(db: Session, participante: ParticipantesModel, dados) -> ParticipantesModel:
     participante.nome = dados.nome
     participante.email = dados.email
     participante.curso = dados.curso
     db.commit()
     db.refresh(participante)
     return participante
-
-
-# Cadastrar participante: (CHECK)
-# POST /participantes
-
-# Listar participantes: (CHECK)
-# GET /participantes
-
-# Consultar participante: (CHECK)
-# GET /participantes/{id}
-
-# Atualizar participante: (CHECK)
-# PUT /participantes/{id}
-
-# Excluir participante: (CHECK)
-# DELETE /participantes/{id}

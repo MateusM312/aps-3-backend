@@ -21,7 +21,7 @@ def cadastrar_evento(evento: EventoCreate, db: Session = Depends(get_db)):
 # Deverá retornar a lista de eventos cadastrados.
 @router.get("/", response_model=list[EventoResponse])
 def listar_eventos(db: Session = Depends(get_db)):
-    return eventos_services.listar_eventos()
+    return eventos_services.listar_eventos(db)
 
 
 # Consultar evento

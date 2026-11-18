@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from model.participantes_model import Participante
+from schema.participantes_model import Participante
 from repositories.participantes_repository import ParticipantesRepositorio
 from services.participantes_service import ParticipantesService
 

@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import eventos_router, participantes_routers
-# precisa importar o router
+from database import Base, engine
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Gerenciamento de eventos acadêmicos - Santana & Mendes")
 
 app.add_middleware(

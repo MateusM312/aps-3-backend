@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
-from model.eventos_model import Evento
-from services.eventos_services import EventoService
+from schema.eventos_model import Evento
+import services.eventos_services
 from repositories.eventos_repository import EventoRepository
 from repositories.participantes_repository import ParticipantesRepositorio
 

@@ -1,72 +1,52 @@
 #  EVENTOS REPOSITORY
 
-class EventoRepository:
-    def __init__(self):
-        self.eventos = []
-        self._proximo_evento = 1
-        self.inscricoes = {}   # {evento_id: [participante_id, ...]}
+from sqlalchemy.orm import Session
+from models import ParticipantesModel, EventoModel, InscricaoModel
 
-    def salvar(self, evento):
-        evento.id = self._proximo_evento
-        self._proximo_evento += 1
-        self.eventos.append(evento)
-        return evento
+def salvar(db:Session, evento:EventoModel) -> EventoModel:
+    db.add(evento)
+    db.commit()
+    db.refresh(evento)
+    return evento
 
-    def listar(self):
-        return self.eventos
+def listar(db:Session) -> list[EventoModel]:
+    return db.query(EventoModel).all()
 
-    def buscar_por_id(self, id: int):
-        for i in self.eventos:
-            if i.id == id:
-                return i
-        return None
+def buscar_por_id(db: Session, evento_id: int) -> EventoModel | None:
+    return db.query(EventoModel).filter(EventoModel.id == evento_id).first()
 
-    def remover(self, id: int):
-        evento = self.buscar_por_id(id)
-        if evento is None:
-            return None
-        self.eventos.remove(evento)
-        self.inscricoes.pop(id, None)  # limpa as inscrições desse evento também
-        return evento
+def remover(db: Session, evento: EventoModel) -> None:
+    db.delete(evento)
+    db.commit()
 
-    def atualizar(self, id: int, dados):
-        evento = self.buscar_por_id(id)
-        if evento is None:
-            return None
-        evento.titulo = dados.titulo
-        evento.descricao = dados.descricao
-        evento.data = dados.data
-        evento.horario = dados.horario
-        evento.local = dados.local
-        evento.capacidade = dados.capacidade
-        evento.categoria = dados.categoria
-        return evento
+def atualizar(db: Session, evento: EventoModel, dados) -> EventoModel:
+    evento.titulo = dados.titulo
+    evento.descricao = dados.descricao
+    evento.data = dados.data
+    evento.horario = dados.horario
+    evento.local = dados.local
+    evento.capacidade = dados.capacidade
+    evento.categoria = dados.categoria
+    db.commit()
+    db.refresh(evento)
+    return evento
 
-    def inscrever(self, evento_id: int, participante_id: int):
-        self.inscricoes.setdefault(evento_id, []).append(participante_id)
+def inscrever(db: Session, inscricao: InscricaoModel) -> InscricaoModel:
+    db.add(inscricao)
+    db.commit()
+    db.refresh(inscricao)
+    return inscricao
 
-    def listar_inscritos(self, evento_id: int):
-        return self.inscricoes.get(evento_id, [])
+def listar_inscritos(db: Session, evento_id: int) -> list[ParticipantesModel]:
+    return (
+        db.query(ParticipantesModel)
+        .join(InscricaoModel, InscricaoModel.participante_id == ParticipantesModel.id)
+        .filter(InscricaoModel.evento_id == evento_id)
+        .all()
+    )
 
+def contar_inscritos(db: Session, evento_id: int) -> int:
+    return db.query(InscricaoModel).filter(InscricaoModel.evento_id == evento_id).count()
 
-# Cadastrar evento (CHECK)
-# POST /eventos
-# Deverá receber os dados do evento em formato JSON e retornar o evento cadastrado.
-
-# Listar eventos (CHECK)
-# GET /eventos
-# Deverá retornar a lista de eventos cadastrados.
-
-# Consultar evento
-# GET /eventos/{id}
-# Deverá retornar os dados de um evento específico.
-# Caso o evento não exista, a API deverá retornar um código HTTP adequado e uma
-# mensagem informando o problema.
-
-# Atualizar evento
-# PUT /eventos/{id}
-# Deverá permitir a atualização dos dados de um evento existente.
-
-# Excluir evento
-# DELETE /eventos/{id}
-# Deverá remover um evento existente.
+def buscar_inscricao(db: Session, evento_id: int, participante_id: int) -> InscricaoModel | None:
+    return (db.query(InscricaoModel).filter(InscricaoModel.evento_id == evento_id, InscricaoModel.participante_id == participante_id,).first())

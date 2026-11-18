@@ -1,16 +1,8 @@
 # EVENTOS MODEL
 
 from pydantic import BaseModel
-
-# Exemplos:
-# class Filme(BaseModel):
-#     id: int | None = None
-#     titulo: str
-#     diretor: str
-#     estoque: int
-
 class Evento(BaseModel):
-    id: int | None = None
+    # id: int | None = None # acho q nn precisa por causa do banco de dados
     titulo: str
     descricao: str
     data: str

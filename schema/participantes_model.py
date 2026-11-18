@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # ●  curso 
 
 class Participante(BaseModel):
-    id: int | None = None
+    # id: int | None = None # nao vai precisar
     nome: str
     email: str
     curso: str

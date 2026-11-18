@@ -1,41 +1,32 @@
 # REPOSITORIO PARTICIPANTES
 
-class ParticipantesRepositorio:
-    def __init__(self):
-        self.participantes = []
-        self._proximo_id = 1
+from sqlalchemy.orm import Session
+from models import ParticipantesModel, EventoModel, InscricaoModel
 
-    def salvar(self, participante):
-        participante.id = self._proximo_id
-        self._proximo_id += 1
-        self.participantes.append(participante)
-        return participante
+def salvar(db: Session, participante: ParticipantesModel) -> ParticipantesModel:
+    db.add(participante)
+    db.commit()
+    db.refresh(participante)
+    return participante
 
-    def listar_participantes(self):
-        return self.participantes
+def listar_participantes(db: Session, participante: ParticipantesModel):
+    return db.query(participante).all()
 
-    def buscar_por_id(self, id: int):
-        for i in self.participantes:
-            if i.id == id:
-                return i
+def buscar_por_id(db: Session, participante: ParticipantesModel, id: int) -> ParticipantesModel | None:
+    db.query(ParticipantesModel).filter(ParticipantesModel.id == id).first()
+    return None
 
-        return None
+def excluir(db: Session, participante: ParticipantesModel, id: int) -> None:
+    db.delete(participante)
+    db.commit()
 
-    def excluir(self, id: int):
-        participante = self.buscar_por_id(id)
-        if participante is None:
-            return None
-        self.participantes.remove(participante)
-        return participante
-
-    def atualizar(self, id: int, dados):
-        participante = self.buscar_por_id(id)
-        if participante is None:
-            return None
-        participante.nome = dados.nome
-        participante.email = dados.email
-        participante.curso = dados.curso
-        return participante
+def atualizar(db: Session, participante: ParticipantesModel, id: int, dados) -> ParticipantesModel:
+    participante.nome = dados.nome
+    participante.email = dados.email
+    participante.curso = dados.curso
+    db.commit()
+    db.refresh(participante)
+    return participante
 
 
 # Cadastrar participante: (CHECK)

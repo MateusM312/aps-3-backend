@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import eventos_router, participantes_routers
+from routers import eventos_router, participantes_routers, relatorios_router
 from database import Base, engine
 
 Base.metadata.create_all(bind=engine)
@@ -12,3 +12,4 @@ def raiz():
 
 app.include_router(eventos_router.router)
 app.include_router(participantes_routers.router)
+app.include_router(relatorios_router.router)

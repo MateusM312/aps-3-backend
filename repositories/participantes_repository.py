@@ -1,7 +1,7 @@
 # REPOSITORIO PARTICIPANTES
 
 from sqlalchemy.orm import Session
-from models.model import ParticipantesModel, EventoModel, InscricaoModel
+from models.model import ParticipantesModel
 
 def salvar(db: Session, participante: ParticipantesModel) -> ParticipantesModel:
     db.add(participante)

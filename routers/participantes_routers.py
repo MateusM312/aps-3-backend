@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database import get_db
-from schema.participantes_model import ParticipanteCreate, ParticipanteResponse
+from schema.participantes_schema import ParticipanteCreate, ParticipanteResponse
 from services import participantes_service
 
 router = APIRouter(prefix="/participantes", tags=["Participante"])

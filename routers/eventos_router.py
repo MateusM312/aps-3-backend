@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database import get_db
-from schema.eventos_model import EventoCreate, EventoResponse
-from schema.participantes_model import ParticipanteResponse
+from schema.eventos_schema import EventoCreate, EventoResponse
+from schema.participantes_schema import ParticipanteResponse
 from services import eventos_services
 
 router = APIRouter(prefix="/eventos", tags=["Eventos"])
